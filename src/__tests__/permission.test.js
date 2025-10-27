@@ -48,7 +48,7 @@ describe('Permission routes', () => {
       .mockImplementationOnce(async () => ({
         rows: [
           { permission_id: 1, permission: 'manage users' },
-          { permission_id: 2, permission: 'view clients' },
+          { permission_id: 2, permission: 'view users' },
         ],
       }));
 
@@ -58,7 +58,7 @@ describe('Permission routes', () => {
     expect(res.status).toBe(200);
     expect(res.body).toEqual([
       { permission_id: 1, permission: 'manage users' },
-      { permission_id: 2, permission: 'view clients' },
+      { permission_id: 2, permission: 'view users' },
     ]);
   });
 
@@ -82,4 +82,3 @@ describe('Permission routes', () => {
     errorSpy.mockRestore();
   });
 });
-

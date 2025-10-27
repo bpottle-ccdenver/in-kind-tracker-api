@@ -68,7 +68,7 @@ describe('Allowed permissions routes', () => {
         return {
           rows: [
             { permission: 'manage users' },
-            { permission: 'view clients' },
+            { permission: 'view users' },
           ],
         };
       });
@@ -79,7 +79,7 @@ describe('Allowed permissions routes', () => {
     expect(res.status).toBe(200);
     expect(res.body).toEqual({
       username: 'jane.doe',
-      permissions: ['manage users', 'view clients'],
+      permissions: ['manage users', 'view users'],
     });
   });
 
@@ -129,4 +129,3 @@ describe('Allowed permissions routes', () => {
     errorSpy.mockRestore();
   });
 });
-
