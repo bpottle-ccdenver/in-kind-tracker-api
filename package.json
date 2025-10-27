@@ -1,0 +1,34 @@
+{
+  "name": "in-kind-tracker-api",
+  "version": "1.0.0",
+  "description": "Api for the practice pulse app",
+  "main": "server.js",
+  "scripts": {
+    "dev": "nodemon src/server.js",
+    "start": "node src/server.js",
+    "test": "jest --runInBand"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bpottle-ccdenver/in-kind-tracker-api.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/bpottle-ccdenver/in-kind-tracker-api/issues"
+  },
+  "homepage": "https://github.com/bpottle-ccdenver/in-kind-tracker-api#readme",
+  "dependencies": {
+    "dotenv": "^17.2.2",
+    "express": "^5.1.0",
+    "pg": "^8.16.3"
+  },
+  "devDependencies": {
+    "@babel/preset-env": "^7.28.3",
+    "jest": "^30.2.0",
+    "nodemon": "^3.1.10",
+    "supertest": "^7.1.4"
+  }
+}

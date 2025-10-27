@@ -1,0 +1,5 @@
+# Ignore environment files (development/local)
+.env
+
+# Node dependencies
+node_modules/
