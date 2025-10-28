@@ -117,47 +117,6 @@ describe('Location routes', () => {
     expect(res.body).toEqual({ error: 'Location not found' });
   });
 
-  test('GET /location/:id/therapists returns therapists for location', async () => {
-    pool.query
-      .mockImplementationOnce(async () => ({
-        rows: [{ permission: 'view locations' }],
-      }))
-      .mockImplementationOnce(async () => ({
-        rowCount: 1,
-        rows: [{ location_id: 2 }],
-      }))
-      .mockImplementationOnce(async () => ({
-        rows: [
-          { therapist_id: 9, location_id: 2, priority: 1, name: 'Dr. Smith' },
-        ],
-      }));
-
-    const app = createTestApp();
-    const res = await performRequest(app, { method: 'GET', path: '/location/2/therapists' });
-
-    expect(res.status).toBe(200);
-    expect(res.body).toEqual([
-      { therapist_id: 9, location_id: 2, priority: 1, name: 'Dr. Smith' },
-    ]);
-  });
-
-  test('GET /location/:id/therapists returns 404 when location missing', async () => {
-    pool.query
-      .mockImplementationOnce(async () => ({
-        rows: [{ permission: 'view locations' }],
-      }))
-      .mockImplementationOnce(async () => ({
-        rowCount: 0,
-        rows: [],
-      }));
-
-    const app = createTestApp();
-    const res = await performRequest(app, { method: 'GET', path: '/location/99/therapists' });
-
-    expect(res.status).toBe(404);
-    expect(res.body).toEqual({ error: 'Location not found' });
-  });
-
   test('PATCH /location requires fields', async () => {
     pool.query.mockImplementationOnce(async () => ({
       rows: [{ permission: 'manage locations' }],

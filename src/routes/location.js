@@ -74,46 +74,6 @@ router.get('/:location_id', async (req, res) => {
   }
 });
 
-router.get('/:location_id/therapists', async (req, res) => {
-  try {
-    const { location_id } = req.params;
-
-    const locationCheck = await pool.query(
-      `
-        SELECT location_id
-        FROM in_kind_tracker.location
-        WHERE location_id = $1
-        LIMIT 1
-      `,
-      [location_id],
-    );
-    if (locationCheck.rowCount === 0) {
-      return res.status(404).json({ error: 'Location not found' });
-    }
-
-    const sql = `
-      SELECT
-        tl.therapist_id,
-        tl.location_id,
-        tl.priority,
-        t.name,
-        t.email,
-        t.employment_type,
-        t.status,
-        t.profile_image_url
-      FROM in_kind_tracker.therapist_location tl
-      JOIN in_kind_tracker.therapist t ON t.therapist_id = tl.therapist_id
-      WHERE tl.location_id = $1
-      ORDER BY tl.priority ASC, t.name ASC
-    `;
-    const { rows } = await pool.query(sql, [location_id]);
-    return res.json(rows);
-  } catch (err) {
-    console.error('Error fetching therapists for location:', err);
-    return res.status(500).json({ error: 'Internal server error, ' + (err?.message || err) });
-  }
-});
-
 /**
  * PATCH /location/:location_id
  * Partially updates a location record.

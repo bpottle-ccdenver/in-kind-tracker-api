@@ -1,6 +1,6 @@
 # Practice Pulse API
 
-Practice Pulse is a full-stack tool that helps behavioral health practices keep a handle on therapists, sessions, programs, and finances. This repository contains the Express-based backend that powers the application. It exposes REST endpoints for the web front-end, orchestrates authentication/authorization, and persists data to PostgreSQL.
+Practice Pulse is a full-stack tool that helps behavioral health practices keep a handle on staff, sessions, programs, and finances. This repository contains the Express-based backend that powers the application. It exposes REST endpoints for the web front-end, orchestrates authentication/authorization, and persists data to PostgreSQL.
 
 This document is intentionally thorough so another engineer can step in quickly if the primary maintainer is unavailable.
 
@@ -12,7 +12,7 @@ This document is intentionally thorough so another engineer can step in quickly 
 - **Tests:** Jest with lightweight mocks around the `pg` client
 - **Deploy:** Custom script (`deploy-prod-api.sh`) that copies files to a staging directory on the server
 
-`src/server.js` is the main entry point. Every resource (therapists, programs, expenses, etc.) lives in `src/routes/` and is protected by the permission middleware in `src/middleware/authorization.js`.
+`src/server.js` is the main entry point. Every resource (programs, expenses, etc.) lives in `src/routes/` and is protected by the permission middleware in `src/middleware/authorization.js`.
 
 ## Getting started
 

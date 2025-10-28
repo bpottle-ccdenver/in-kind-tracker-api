@@ -84,7 +84,7 @@ describe('Auth routes', () => {
               name: 'Inactive User',
               status: 'inactive',
               role_id: 2,
-              role_name: 'Therapist',
+              role_name: 'Associate',
               default_route: '/dashboard',
             },
           ],

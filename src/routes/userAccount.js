@@ -32,27 +32,6 @@ function validateStatus(status) {
   return trimmed;
 }
 
-async function ensureTherapistExists(therapistId) {
-  if (therapistId === undefined || therapistId === null || therapistId === '') {
-    return null;
-  }
-  if (typeof therapistId === 'string' && therapistId.toLowerCase() === 'none') {
-    return null;
-  }
-  const parsed = Number(therapistId);
-  if (!Number.isInteger(parsed) || parsed < 1) {
-    throw new Error('therapist_id must be a positive integer');
-  }
-  const { rowCount } = await pool.query(
-    'SELECT 1 FROM in_kind_tracker.therapist WHERE therapist_id = $1 LIMIT 1',
-    [parsed],
-  );
-  if (rowCount === 0) {
-    throw new Error('Referenced therapist does not exist');
-  }
-  return parsed;
-}
-
 async function ensureRoleExists(roleId) {
   if (roleId === undefined || roleId === null || roleId === '') {
     return null;
@@ -135,19 +114,17 @@ router.post('/', async (req, res) => {
       name,
       status,
       profile_image_url,
-      therapist_id,
       role_id,
     } = req.body || {};
 
     const validatedUsername = validateEmail(username);
     const validatedStatus = validateStatus(status) ?? 'pending';
-    const validatedTherapistId = await ensureTherapistExists(therapist_id);
     const validatedRoleId = await ensureRoleExists(role_id);
 
     const sql = `
       INSERT INTO in_kind_tracker.user_account
-        (username, name, status, profile_image_url, therapist_id, role_id)
-      VALUES ($1, $2, $3, $4, $5, $6)
+        (username, name, status, profile_image_url, role_id)
+      VALUES ($1, $2, $3, $4, $5)
       RETURNING *
     `;
     const params = [
@@ -155,7 +132,6 @@ router.post('/', async (req, res) => {
       name ?? null,
       validatedStatus,
       profile_image_url ?? null,
-      validatedTherapistId ?? null,
       validatedRoleId ?? null,
     ];
 
@@ -203,12 +179,6 @@ router.patch('/:user_id', async (req, res) => {
           const validated = validateStatus(value);
           values.push(validated);
           setClauses.push(`status = $${values.length}`);
-          break;
-        }
-        case 'therapist_id': {
-          const validated = await ensureTherapistExists(value);
-          values.push(validated ?? null);
-          setClauses.push(`therapist_id = $${values.length}`);
           break;
         }
         case 'role_id': {
